@@ -1,9 +1,13 @@
-const ErrorForm = ({error}) => {
+const ErrorForm = ({ error }) => {
   return (
     <>
-    {error && <span>{error.message}</span>}
+      {error && (
+        <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+          {error.message}
+        </p>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default ErrorForm
+export default ErrorForm;

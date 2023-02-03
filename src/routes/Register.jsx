@@ -6,6 +6,8 @@ import InputTextForm from "../components/InputTextForm";
 import ErrorForm from "../components/ErrorForm";
 import { formValidate } from "../utils/formValidate";
 import { errorsFirebase } from "../utils/errorsFirebase";
+import Title from "../components/Title";
+import Button from "../components/Button";
 
 const Register = () => {
   const navegate = useNavigate();
@@ -32,21 +34,23 @@ const Register = () => {
       navegate("/");
     } catch (error) {
       console.log(error.code);
-      setError("firebase", {
+      const { code, message } = errorsFirebase(error.code);
+      setError(code, {
         type: "custom",
-        message: errorsFirebase(error.code),
+        message: message,
       });
     }
   };
 
   return (
     <>
-      <h2>Regístrate</h2>
-      <ErrorForm error={errors.firebase} />
+      <Title title="Registro" />
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputTextForm
           type="email"
           placeholder="Correo electrónico"
+          label="Tu correo electrónico"
+          error={errors.email}
           {...register("email", {
             required,
             pattern: patternEmail,
@@ -56,8 +60,10 @@ const Register = () => {
         </InputTextForm>
 
         <InputTextForm
-          type="password"
+          type="text"
           placeholder="Contraseña"
+          label="Tu contraseña"
+          error={errors.password}
           {...register("password", {
             minLength: minLength,
             validate: validateTrim,
@@ -67,8 +73,10 @@ const Register = () => {
         </InputTextForm>
 
         <InputTextForm
-          type="password"
-          placeholder="Repita la contraseña"
+          type="text"
+          placeholder="Repite la contraseña"
+          label="Repite tu contraseña"
+          error={errors.repeatPassword}
           {...register("repeatPassword", {
             validate: validateEquals(getValues),
           })}
@@ -76,7 +84,7 @@ const Register = () => {
           <ErrorForm error={errors.repeatPassword} />
         </InputTextForm>
 
-        <button type="submit">Regístrate</button>
+        <Button type="submit" text="Regístrate" />
       </form>
     </>
   );

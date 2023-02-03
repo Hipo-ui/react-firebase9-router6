@@ -6,18 +6,18 @@ import InputTextForm from "../components/InputTextForm";
 import ErrorForm from "../components/ErrorForm";
 import { formValidate } from "../utils/formValidate";
 import { errorsFirebase } from "../utils/errorsFirebase";
+import Title from "../components/Title";
+import Button from "../components/Button";
 
 const Login = () => {
   const { loginUser } = useContext(UserContext);
   const navegate = useNavigate();
 
-  const { required, patternEmail, minLength, validateTrim, validateEquals } =
-    formValidate();
+  const { required, patternEmail, minLength, validateTrim } = formValidate();
 
   const {
     register,
     handleSubmit,
-    getValues,
     setError,
     formState: { errors },
   } = useForm();
@@ -28,21 +28,23 @@ const Login = () => {
       navegate("/");
     } catch (error) {
       console.log(error.code);
-      setError("firebase", {
+      const { code, message } = errorsFirebase(error.code);
+      setError(code, {
         type: "custom",
-        message: errorsFirebase(error.code),
+        message: message,
       });
     }
   };
 
   return (
     <>
-      <h2>Inicia sesión</h2>
-      <ErrorForm error={errors.firebase} />
+      <Title title="Inicio de sesión" />
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputTextForm
           type="email"
           placeholder="Correo electrónico"
+          label="Ingresa tu correo"
+          error={errors.email}
           {...register("email", {
             required,
             pattern: patternEmail,
@@ -54,6 +56,8 @@ const Login = () => {
         <InputTextForm
           type="password"
           placeholder="Contraseña"
+          label="Ingresa tu contraseña"
+          error={errors.password}
           {...register("password", {
             minLength: minLength,
             validate: validateTrim,
@@ -62,7 +66,7 @@ const Login = () => {
           <ErrorForm error={errors.password} />
         </InputTextForm>
 
-        <button type="submit">Inicia sesión</button>
+        <Button type="submit" text="Inicia sesión" />
       </form>
     </>
   );

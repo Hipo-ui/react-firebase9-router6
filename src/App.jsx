@@ -7,6 +7,7 @@ import NotFound from "./routes/NotFound";
 import RequireAuth from "./components/RequireAuth";
 import { useContext } from "react";
 import { UserContext } from "./context/UserProvider";
+import LayoutContanierForm from "./components/LayoutContanierForm";
 
 const App = () => {
   const { user } = useContext(UserContext);
@@ -18,7 +19,7 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <h1>APP</h1>
+      <h1>My APP</h1>
       <Routes>
 
         <Route path="/"
@@ -29,9 +30,11 @@ const App = () => {
           }
         />
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<LayoutContanierForm />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
 
-        <Route path="/register" element={<Register />} />
 
         <Route path="/*" element={<NotFound />} />
 

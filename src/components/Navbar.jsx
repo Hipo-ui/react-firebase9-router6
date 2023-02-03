@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserProvider";
+
 const Navbar = () => {
   const { user, signOutUser } = useContext(UserContext);
 
